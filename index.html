@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tatile Ne Kadar Kaldı?</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏖️%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f3f0e8;
+    --ink: #14110f;
+    --card: #fffdf8;
+    --line: rgba(20, 17, 15, 0.1);
+    --mute: rgba(20, 17, 15, 0.55);
+    --acc: #ff4f1f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0e0d;
+      --ink: #f3f0e8;
+      --card: #1a1816;
+      --line: rgba(243, 240, 232, 0.12);
+      --mute: rgba(243, 240, 232, 0.55);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", "Segoe UI Variable Display", system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+  /* Silik ızgara zemin */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; opacity: 0.5;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+  }
+  main { position: relative; max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  .ust-seri { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 44px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+    border: 1px solid var(--line); border-radius: 99px; background: var(--card); font-size: 13px;
+  }
+  .nokta { width: 8px; height: 8px; border-radius: 50%; background: var(--acc); animation: nabiz 1.6s ease-in-out infinite; }
+  @keyframes nabiz { 50% { opacity: 0.25; transform: scale(0.7); } }
+
+  h1 {
+    font-size: clamp(40px, 9vw, 92px); line-height: 0.95; letter-spacing: -0.035em;
+    font-weight: 800; margin: 0 0 14px; animation: gir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  h1 em { font-style: normal; color: var(--acc); }
+  .alt { color: var(--mute); font-size: 17px; max-width: 46ch; margin: 0 0 40px; animation: gir 0.8s 0.1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  @keyframes gir { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+  /* Bento ızgara */
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+  .kart {
+    position: relative; grid-column: span 4; padding: 22px; border-radius: 28px;
+    background: var(--card); border: 1px solid var(--line); overflow: hidden;
+    animation: gir 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .kart::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+    background: radial-gradient(260px circle at var(--x, 50%) var(--y, 0%), rgba(255, 79, 31, 0.18), transparent 65%);
+  }
+  .kart:hover::before { opacity: 1; }
+  .kart > * { position: relative; }
+
+  .sonraki {
+    grid-column: span 8; order: -2; background: var(--ink); color: var(--bg); border-color: transparent;
+    --mute: color-mix(in srgb, var(--bg) 62%, transparent);
+    --line: color-mix(in srgb, var(--bg) 22%, transparent);
+  }
+  .yil { order: -1; }
+  .gecti { opacity: 0.5; }
+
+  .ust { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 26px; }
+  .etiket { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .etiket:empty { display: none; }
+  .sonraki .etiket { background: var(--acc); color: #fff; padding: 4px 11px; border-radius: 99px; }
+  .tarih { font-size: 13px; color: var(--mute); }
+  h2 { font-size: 22px; letter-spacing: -0.02em; margin: 14px 0 8px; }
+  .sonraki h2 { font-size: 30px; }
+
+  .buyuk { display: flex; align-items: baseline; gap: 10px; }
+  .gun { font-size: 64px; line-height: 1; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .sonraki .gun { font-size: clamp(76px, 16vw, 150px); }
+  .birim { font-size: 20px; color: var(--mute); }
+  .zaman { margin: 8px 0 0; font-size: 17px; color: var(--mute); font-variant-numeric: tabular-nums; }
+  .sonraki .zaman { font-size: 24px; color: var(--bg); }
+
+  .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 20px; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--acc); border-radius: 99px; transition: width 1s linear; }
+  .yuzde { margin: 8px 0 0; font-size: 13px; color: var(--mute); }
+
+  /* Kayan şerit */
+  .serit { margin-top: 44px; overflow: hidden; white-space: nowrap; border-block: 1px solid var(--line); padding: 14px 0; }
+  .kayan { display: inline-flex; animation: kay 32s linear infinite; }
+  .kayan span {
+    font-size: clamp(30px, 6vw, 58px); font-weight: 800; letter-spacing: -0.02em; padding-right: 32px;
+    color: transparent; -webkit-text-stroke: 1.5px var(--mute);
+  }
+  @keyframes kay { to { transform: translateX(-50%); } }
+
+  @media (max-width: 760px) {
+    .kart, .sonraki { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    h1, .alt, .kart, .kayan, .nokta { animation: none; }
+    .bar i { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="ust-seri">
+    <span class="pill"><span class="nokta"></span>Canlı geri sayım</span>
+    <span class="pill" id="bugun"></span>
+  </div>
+
+  <h1>Tatile ne kadar <em>kaldı?</em></h1>
+  <p class="alt">Ara tatillere ve yaz tatiline kalan zaman, saniye saniye.</p>
+
+  <section class="bento" id="bento"></section>
+
+  <div class="serit" aria-hidden="true"><div class="kayan" id="kayan"></div></div>
+</main>
+
+<script>
+  // Tarihleri istersen buradan değiştir. Biçim: YIL-AY-GÜNTSAAT:DAKİKA:SANİYE
+  const OKUL_BASLANGIC = "2026-09-14T00:00:00";
+  const OKUL_BITIS = "2027-06-25T00:00:00";
+  const TATILLER = [
+    { ad: "1. Ara Tatil",   tarih: "2026-11-16T00:00:00", bitis: "2026-11-20T00:00:00", not: "16 - 20 Kasım" },
+    { ad: "Yarıyıl Tatili", tarih: "2027-01-25T00:00:00", bitis: "2027-02-05T00:00:00", not: "25 Ocak - 5 Şubat" },
+    { ad: "2. Ara Tatil",   tarih: "2027-03-08T00:00:00", bitis: "2027-03-12T00:00:00", not: "8 - 12 Mart" },
+    { ad: "Yaz Tatili",     tarih: "2027-06-25T00:00:00", bitis: null,                  not: "25 Haziran" }
+  ];
+
+  const zaman = (s) => new Date(s).getTime();
+  const iki = (n) => String(n).padStart(2, "0");
+  const sinirla = (x) => Math.min(1, Math.max(0, x));
+  const yuzdeYaz = (p) => (p * 100).toLocaleString("tr-TR", { maximumFractionDigits: 1 });
+
+  function olustur(tag, sinif, metin) {
+    const e = document.createElement(tag);
+    if (sinif) e.className = sinif;
+    if (metin !== undefined) e.textContent = metin;
+    return e;
+  }
+
+  document.getElementById("bugun").textContent =
+    new Date().toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
+
+  // Kayan şerit: iki özdeş yarım, böylece döngü kesintisiz
+  const kayan = document.getElementById("kayan");
+  const cumle = TATILLER.map((t) => t.ad.toUpperCase()).join(" ✦ ") + " ✦ ";
+  for (let i = 0; i < 2; i++) kayan.appendChild(olustur("span", "", cumle.repeat(3)));
+
+  // Kartlar bir kere oluşturulur, her saniye sadece değerler güncellenir
+  const bento = document.getElementById("bento");
+  const kartlar = TATILLER.map((t, i) => {
+    const kart = olustur("article", "kart");
+    kart.style.animationDelay = 0.2 + i * 0.1 + "s";
+    const etiket = olustur("span", "etiket", "");
+    const ust = olustur("div", "ust");
+    ust.append(etiket, olustur("span", "tarih", t.not));
+    const gun = olustur("b", "gun", "0");
+    const buyuk = olustur("div", "buyuk");
+    buyuk.append(gun, olustur("span", "birim", "gün"));
+    const zam = olustur("p", "zaman", "");
+    const dolgu = olustur("i");
+    const bar = olustur("div", "bar");
+    bar.appendChild(dolgu);
+    const yuzde = olustur("p", "yuzde", "");
+    kart.append(ust, olustur("h2", "", t.ad), buyuk, zam, bar, yuzde);
+    bento.appendChild(kart);
+    return {
+      kart, etiket, gun, zam, dolgu, yuzde,
+      hedef: zaman(t.tarih),
+      baslangic: zaman(i === 0 ? OKUL_BASLANGIC : TATILLER[i - 1].bitis)
+    };
+  });
+
+  // Eğitim yılı kartı
+  const yilKart = olustur("article", "kart yil");
+  yilKart.style.animationDelay = 0.2 + TATILLER.length * 0.1 + "s";
+  const yilBuyuk = olustur("b", "gun", "0");
+  const yilDolgu = olustur("i");
+  const yilBar = olustur("div", "bar");
+  yilBar.appendChild(yilDolgu);
+  const yilBuyukKutu = olustur("div", "buyuk");
+  yilBuyukKutu.append(olustur("span", "birim", "%"), yilBuyuk);
+  const yilUst = olustur("div", "ust");
+  yilUst.append(olustur("span", "etiket", ""), olustur("span", "tarih", "14 Eylül - 25 Haziran"));
+  yilKart.append(yilUst, olustur("h2", "", "Eğitim yılı"), yilBuyukKutu, yilBar,
+    olustur("p", "yuzde", "Yılın ne kadarı geride kaldı"));
+  bento.appendChild(yilKart);
+
+  function guncelle() {
+    const simdi = Date.now();
+    const sonraki = kartlar.findIndex((k) => k.hedef > simdi);
+    kartlar.forEach((k, i) => {
+      const kalan = k.hedef - simdi;
+      const bitmis = kalan <= 0;
+      k.kart.classList.toggle("sonraki", i === sonraki);
+      k.kart.classList.toggle("gecti", bitmis);
+      k.etiket.textContent = i === sonraki ? "Sıradaki" : bitmis ? "Bitti ✓" : "";
+      const p = sinirla((simdi - k.baslangic) / (k.hedef - k.baslangic));
+      k.dolgu.style.width = p * 100 + "%";
+      if (bitmis) {
+        k.gun.textContent = "0";
+        k.zam.textContent = "Tatil başladı 🎉";
+        k.yuzde.textContent = "";
+        return;
+      }
+      const s = Math.floor(kalan / 1000);
+      k.gun.textContent = Math.floor(s / 86400);
+      k.zam.textContent = iki(Math.floor((s % 86400) / 3600)) + " sa  " +
+        iki(Math.floor((s % 3600) / 60)) + " dk  " + iki(s % 60) + " sn";
+      k.yuzde.textContent = "Yolun %" + yuzdeYaz(p) + " tamamlandı";
+    });
+    const yp = sinirla((simdi - zaman(OKUL_BASLANGIC)) / (zaman(OKUL_BITIS) - zaman(OKUL_BASLANGIC)));
+    yilBuyuk.textContent = yuzdeYaz(yp);
+    yilDolgu.style.width = yp * 100 + "%";
+  }
+
+  // İmleci takip eden ışık efekti
+  document.addEventListener("pointermove", (e) => {
+    const k = e.target.closest(".kart");
+    if (!k) return;
+    const r = k.getBoundingClientRect();
+    k.style.setProperty("--x", e.clientX - r.left + "px");
+    k.style.setProperty("--y", e.clientY - r.top + "px");
+  });
+
+  guncelle();
+  setInterval(guncelle, 1000);
+</script>
+</body>
+</html>
